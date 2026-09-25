@@ -4,6 +4,13 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+# 1. ESTO ES NUEVO: Permisos necesarios para que GitHub Actions pueda crear la página web
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   test:
     timeout-minutes: 60
@@ -25,3 +32,30 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+  # 2. ESTE JOB ES NUEVO: Toma el reporte generado arriba y lo sube a GitHub Pages
+  deploy-report-to-pages:
+    needs: test # Espera a que el job 'test' termine
+    if: always() # Se ejecuta aunque las pruebas fallen (para poder ver el reporte del error)
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Descargar el reporte HTML
+      uses: actions/download-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report
+        
+    - name: Configurar GitHub Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Preparar artefacto para Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: playwright-report
+        
+    - name: Desplegar en GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
