@@ -64,5 +64,18 @@ test.describe('TC03-LoginError',()=>{
 
    });
 
+   test('Prueba de error',async({loginPage})=>{
+
+      await loginPage.Login(validUser.email,"");
+
+      //Validamo que el mensaje de error sea visible 
+
+      await expect(loginPage.errorMessage).toBeVisible();
+
+      //Validamos que el mensaje de error de contraseña faltante sea el esperado
+      await expect(loginPage.errorMessage).toHaveText("..........");
+
+   });
+
 
 }); 
