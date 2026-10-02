@@ -1,37 +1,24 @@
-import {test} from '../fixtures/page';
-import{validUser} from '../data/testData';
-import {expect} from '@playwright/test';
+import { test, expect } from '../fixtures/page';
+import { validUser } from '../data/testData';
 
+test.describe('TC01-LoginExitoso', () => {
 
-test.describe('TC01-LoginExitoso',()=>{
+  test.beforeEach(async ({ loginPage }) => {
+    await loginPage.navigate();
+  });
 
+  test('Login Exitoso', async ({ loginPage, inventoryPage }) => {
+    await expect(loginPage.inputPassword).toBeVisible();
+    await loginPage.login(validUser.username, validUser.password);
+    await expect(inventoryPage.title).toBeVisible();
+  });
 
-
-    test.beforeEach(async({loginPage})=>{
-
-        await loginPage.navigate();
-    })
-
-
-    test('Login Exitoso',async({loginPage})=>{
-         
-        await expect(loginPage.inputPassword).toBeVisible();
-        await loginPage.Login(validUser.email,validUser.password);
-        await expect(loginPage.title).toBeVisible();
-
-    });
-
-
-    test('Login y cierre de sesion exitoso',async({loginPage})=>{
-
-        await expect(loginPage.inputPassword).toBeVisible();
-        await loginPage.Login(validUser.email,validUser.password);
-        await expect(loginPage.title).toBeVisible();
-        await loginPage.btnDropdown.click();
-        await loginPage.btnLogout.click();
-        await expect(loginPage.inputPassword).toBeVisible();
-    });
-
-
+  test('Login y cierre de sesion exitoso', async ({ loginPage, inventoryPage }) => {
+    await expect(loginPage.inputPassword).toBeVisible();
+    await loginPage.login(validUser.username, validUser.password);
+    await expect(inventoryPage.title).toBeVisible();
+    await inventoryPage.logout();
+    await expect(loginPage.inputPassword).toBeVisible();
+  });
 
 });

@@ -2,11 +2,21 @@
   "name": "saucedemo_pruebas_automatizadas",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:chromium": "playwright test --project=chromium",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "saucedemo"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Pruebas automatizadas E2E para SauceDemo usando Playwright y TypeScript",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.6.2"

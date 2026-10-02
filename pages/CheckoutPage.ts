@@ -1,42 +1,28 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
-export class CartPage extends BasePage {
-  readonly buttonCheckout: Locator;
-  readonly btnRemoveItem: Locator;
-  readonly cartItems: Locator;
-  readonly buttonContinueShopping: Locator;
-
-  // Selectores de Checkout para retrocompatibilidad
+export class CheckoutPage extends BasePage {
   readonly inputFirstName: Locator;
   readonly inputLastName: Locator;
   readonly inputPostalCode: Locator;
   readonly buttonContinue: Locator;
+  readonly buttonCancel: Locator;
   readonly buttonFinish: Locator;
   readonly messageCheckoutComplete: Locator;
 
   constructor(page: Page) {
     super(page);
 
-    this.buttonCheckout = page.locator('[data-test="checkout"]');
-    this.btnRemoveItem = page.locator('.cart_button');
-    this.cartItems = page.locator('.cart_item');
-    this.buttonContinueShopping = page.locator('[data-test="continue-shopping"]');
-
-    // Checkout
     this.inputFirstName = page.locator('[data-test="firstName"]');
     this.inputLastName = page.locator('[data-test="lastName"]');
     this.inputPostalCode = page.locator('[data-test="postalCode"]');
     this.buttonContinue = page.locator('[data-test="continue"]');
+    this.buttonCancel = page.locator('[data-test="cancel"]');
     this.buttonFinish = page.locator('[data-test="finish"]');
     this.messageCheckoutComplete = page.locator('[data-test="complete-header"]');
   }
 
-  async proceedToCheckout(): Promise<void> {
-    await this.buttonCheckout.click();
-  }
-
-  async fillCheckoutForm(firstName: string, lastName: string, postalCode: string): Promise<void> {
+  async fillInformation(firstName: string, lastName: string, postalCode: string): Promise<void> {
     await this.inputFirstName.fill(firstName);
     await this.inputLastName.fill(lastName);
     await this.inputPostalCode.fill(postalCode);

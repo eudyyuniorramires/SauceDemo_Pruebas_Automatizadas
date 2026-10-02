@@ -1,29 +1,38 @@
-import {test as base} from '@playwright/test';
-import {LoginPage} from '../pages/LoginPage';
-import {InvetoryPage} from '../pages/InvetoryPage';
-import {CartPage} from '../pages/CartPage';
+import { test as base, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import { CartPage } from '../pages/CartPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
-type PageObject = {
-
+type PageObjects = {
   loginPage: LoginPage;
-  invetoryPage: InvetoryPage;
+  inventoryPage: InventoryPage;
+  /** @deprecated Usar inventoryPage */
+  invetoryPage: InventoryPage;
   cartPage: CartPage;
+  checkoutPage: CheckoutPage;
+};
 
-}
-
-export const test = base.extend<PageObject>({
- 
-   loginPage: async ({ page }, use) => {
+export const test = base.extend<PageObjects>({
+  loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
   },
 
-    invetoryPage: async({page}, use)=>{
-    await use(new InvetoryPage(page));
+  inventoryPage: async ({ page }, use) => {
+    await use(new InventoryPage(page));
   },
 
-   cartPage: async({page},use)=>{
-   
+  invetoryPage: async ({ inventoryPage }, use) => {
+    await use(inventoryPage);
+  },
+
+  cartPage: async ({ page }, use) => {
     await use(new CartPage(page));
   },
 
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
+  },
 });
+
+export { expect };
