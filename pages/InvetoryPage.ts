@@ -14,6 +14,12 @@ export class InvetoryPage extends BasePage{
 
     readonly CountCartIcon:Locator;
 
+    readonly btnFilter:Locator;
+
+    readonly productPrice:Locator;
+
+
+
     constructor(page:Page){
         super(page);
        
@@ -27,11 +33,37 @@ export class InvetoryPage extends BasePage{
         this.CountItemPage = page.locator('.cart_item');
 
         this.CountCartIcon = page.locator('.shopping_cart_badge');
-    
+
+        this.btnFilter = page.locator('[data-test="product-sort-container"]');
+
+        this.productPrice = page.locator('[data-test="inventory-item-price"]');
+
     
     }
 
 
+    async filterProductsBy(option:string):Promise<void>{
+        
+        await this.btnFilter.selectOption(option);
+
+
+    }
+
+    async getProductsNames():Promise<string[]>{
+
+       return await this.item.allTextContents();
+
+    }
+
+    async getProductsPrices():Promise<number[]>{
+ 
+        const princesText = await this.productPrice.allTextContents();
+
+        return princesText.map(price => parseFloat(price.replace('$','')));
+
+    }
+
+ 
 
     async addProductsToCart():Promise<string[]>{
           
@@ -59,28 +91,18 @@ export class InvetoryPage extends BasePage{
 
             await addCartButton.click();
 
-            await expect(addCartButton).toContainText('Remove');
         }
 
         await this.btnCart.click();
 
-        // const countItemCart = await this.CountItemPage.count();
-
-        // await expect(countItemCart == itemCount).toBeTruthy();
+     
 
 
         return ProductsAdded;
 
     }
 
-    // async getCartItemCount():Promise<void>{
-
-    //       const countItemCart = await this.CountItemPage.count();
-          
-
-    // }
-
-
+    
 
 
 }

@@ -14,6 +14,10 @@ export class LoginPage extends BasePage{
 
     readonly errorMessage:Locator;
 
+    readonly btnDropdown:Locator;
+
+    readonly btnLogout:Locator;
+
     constructor (page:Page){
         super(page); 
 
@@ -26,6 +30,10 @@ export class LoginPage extends BasePage{
         this.title = page.locator('[data-test = "title"]');
 
         this.errorMessage = page.locator('[data-test = "error"]');
+
+        this.btnDropdown = page.getByRole('button', { name: 'Open Menu' })
+
+        this.btnLogout = page.locator('[data-test = "logout-sidebar-link"]');
 
     }
 

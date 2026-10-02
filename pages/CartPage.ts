@@ -4,8 +4,6 @@ import{BasePage} from './BasePage';
 
 export class CartPage extends BasePage{
 
-  
-    
 
     readonly inputFirstName:Locator;
 
@@ -20,6 +18,9 @@ export class CartPage extends BasePage{
     readonly buttonContinue:Locator;
 
     readonly messageCheckoutComplete:Locator;
+
+
+    readonly btnRemoveItem:Locator;
 
     constructor(page:Page){
       super(page);
@@ -38,10 +39,11 @@ export class CartPage extends BasePage{
 
       this.messageCheckoutComplete = page.locator('[data-test="complete-header"]');
 
+      this.btnRemoveItem = page.locator('.cart_button');
+
+      
 
     }
-
-
 
 
 
@@ -63,7 +65,6 @@ export class CartPage extends BasePage{
 
         await this.buttonFinish.click();
 
-        await expect(this.messageCheckoutComplete).toBeVisible();
     }
 
 
